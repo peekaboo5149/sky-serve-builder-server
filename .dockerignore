@@ -1,11 +1,48 @@
 node_modules
-logs/
-*.log
-*.env
 Dockerfile
+docker-compose.yaml
 .prettierrc
 .prettierignore
 
 .DS_STORE
 test
 dist
+
+.gitignore
+*.md
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist
+build
+*.tsbuildinfo
+
+# Environment variables
+*.env
+.env.local
+
+# TypeScript specific
+*.ts
+!*.d.ts
+
+# Logs
+logs
+*.log
+
+# IDE/Editor folders
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# Coverage reports
+coverage
+
+# Other temporary files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.tgz
+*.zip

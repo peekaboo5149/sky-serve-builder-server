@@ -5,21 +5,22 @@ import { LEVEL } from './types'
 export class Logger {
   constructor(private readonly transports: ITransport[]) {}
 
-  private async log(level: LEVEL, message: string, meta?: any): Promise<void> {
+  private async log(level: LEVEL, message: any, meta?: any): Promise<void> {
     for (const transport of this.transports) {
       await transport.log(level, message, meta)
     }
   }
 
-  async info(message: string, meta?: any): Promise<void> {
+  async info(message: any, meta?: any): Promise<void> {
     await this.log('info', message, meta)
   }
 
-  async error(message: string, meta?: any): Promise<void> {
+  async error(message: any, meta?: any): Promise<void> {
     await this.log('error', message, meta)
   }
 
   async close(): Promise<void> {
+    this.info('Closing all resources...')
     for (const transport of this.transports) {
       if (typeof transport.close === 'function') {
         await transport.close()
