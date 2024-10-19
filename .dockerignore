@@ -1,0 +1,11 @@
+node_modules
+logs/
+*.log
+*.env
+Dockerfile
+.prettierrc
+.prettierignore
+
+.DS_STORE
+test
+dist
