@@ -11,18 +11,15 @@ export abstract class FileUploader {
   async upload(distFolderPath: string): Promise<void> {
     await logger.info('Starting to upload...')
     const PROJECT_ID = process.env.PROJECT_ID
-    const distFolderContent = fs.readdirSync(distFolderPath, {
-      withFileTypes: true, // FIXME: nested files are getting ignored
+
+    const distFolderContents = fs.readdirSync(distFolderPath, {
+      recursive: true,
     })
-
-    const uploadPromises = distFolderContent
-      .filter((file) => file.isFile())
-      .map((file) => {
-        const filePath = path.join(distFolderPath, file.name)
-        return this.uploadFile(filePath, PROJECT_ID)
-      })
-
-    await Promise.all(uploadPromises)
+    for (const file of distFolderContents) {
+      const filePath = path.join(distFolderPath, file as string)
+      if (fs.lstatSync(filePath).isDirectory()) continue
+      await this.uploadFile(filePath, PROJECT_ID)
+    }
     await logger.info('Done')
   }
 }

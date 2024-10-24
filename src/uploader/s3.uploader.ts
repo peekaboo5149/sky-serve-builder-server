@@ -24,14 +24,24 @@ export default class S3FileUploader extends FileUploader {
   ): Promise<void> {
     try {
       await logger.info(`uploading ${filePath}`)
+
+      // Get the base directory for the relative path
+      const baseDir = path.join('/home/app/output/dist')
+
+      // Extract the relative path by removing the base directory from the filePath
+      const relativePath = path.relative(baseDir, filePath)
+
       const command = new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME,
-        Key: `__outputs/${projectId}/${path.basename(filePath)}`,
+        Key: `__outputs/${projectId}/${relativePath}`, // Use relativePath here
         Body: fs.createReadStream(filePath),
         ContentType: mime.lookup(filePath) as string,
       })
+
       await this.s3Client.send(command)
-      await logger.info(`uploaded ${filePath}`)
+      await logger.info(
+        `uploaded ${filePath} with path in s3 __outputs/${projectId}/${relativePath}`
+      )
     } catch (error: any) {
       await logger.error(`Failed to upload ${filePath}: ${error.message}`)
     }
