@@ -1,5 +1,6 @@
 import { ITransport } from './transport'
 import ConsoleTransport from './transport/console.transport'
+import KafkaTransport from './transport/kafka.transport'
 import { LEVEL } from './types'
 
 export class Logger {
@@ -29,6 +30,16 @@ export class Logger {
   }
 }
 
-const logger = new Logger([new ConsoleTransport()])
+const transports = [
+  new ConsoleTransport(),
+  process.env.LOG_TRANSPORT === 'kafka'
+    ? new KafkaTransport(
+        [process.env.LOG_TRANSPORT_BROKER],
+        process.env.LOG_QUEUE_TOPIC_NAME
+      )
+    : null,
+].filter((transport) => transport !== null)
+
+const logger = new Logger(transports)
 
 export default logger

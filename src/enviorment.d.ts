@@ -10,6 +10,9 @@ declare global {
       BUCKET_NAME: string
       BLOB_STORE: 'S3' | 'GCS' = 'S3'
       NODE_ENV: 'development' | 'production'
+      LOG_TRANSPORT: 'kafka'
+      LOG_QUEUE_TOPIC_NAME: string
+      LOG_TRANSPORT_BROKER: string
     }
   }
 }

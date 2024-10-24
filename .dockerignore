@@ -49,3 +49,4 @@ Thumbs.db
 assets/
 
 .env.example
+certs

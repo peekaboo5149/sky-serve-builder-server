@@ -17,7 +17,14 @@ export default class GCSFileUploader extends FileUploader {
   async uploadFile(filePath: string, projectId: string): Promise<void> {
     try {
       const bucketName = process.env.BUCKET_NAME!
-      const destination = `__outputs/${projectId}/${path.basename(filePath)}`
+
+      // Get the base directory for the relative path
+      const baseDir = path.join('/home/app/output/dist')
+
+      // Extract the relative path by removing the base directory from the filePath
+      const relativePath = path.relative(baseDir, filePath)
+
+      const destination = `__outputs/${projectId}/${relativePath}`
 
       await logger.info(`Uploading ${filePath}`)
       await this.storage.bucket(bucketName).upload(filePath, {

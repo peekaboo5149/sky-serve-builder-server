@@ -3,3 +3,5 @@ creds.json
 logs
 *.log
 .env
+certs
+exec.bash
