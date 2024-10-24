@@ -46,3 +46,6 @@ Thumbs.db
 # Misc
 *.tgz
 *.zip
+assets/
+
+.env.example
