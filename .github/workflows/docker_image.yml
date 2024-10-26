@@ -11,14 +11,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Fetch commit ID
+        run: |
+          echo "COMMIT_ID=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+          echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
       - name: Build Docker image
         run: |
           docker build -t peekaboo51490/sky_server_build_server:latest .
+          docker tag my-image:latest my-image:${{ env.BRANCH_NAME }}-${{ env.COMMIT_ID }}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
